@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-//const multer = require("multer");
 
 const fileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
@@ -8,7 +7,7 @@ const cloudinary = require("cloudinary").v2;
 const User = require("../models/User");
 const Offer = require("../models/Offer");
 
-const isAuthentificated = require("../middlewares/isAuthentificated");
+const isAuthentificated = require("../middlewares/isAuthenticated");
 
 const convertToBase64 = (file) => {
   return `data:${file.mimetype};base64,${file.data.toString("base64")}`;
@@ -17,7 +16,7 @@ const convertToBase64 = (file) => {
 router.post(
   "/offer/publish",
   isAuthentificated,
-  //upload.array("photos", 3),
+
   fileUpload(),
   async (req, res) => {
     console.log(req.body);
@@ -64,7 +63,6 @@ router.post(
 
         owner: req.user,
       });
-      //console.log(req.files.avatar);
 
       if (!req.files?.image) {
         return res.status(400).json({ message: "No image contained" });
@@ -78,13 +76,7 @@ router.post(
 
         newOffer.product_image = resultAvatar;
 
-        //console.log(avatarConverted);
-        //console.log(resultAvatar);
-        // console.log(req.files.image.length);
-
         const tabImageWithoutAvatarImg = req.files.image.shift();
-        // console.log(a);
-        // console.log(req.files.image);
 
         const arrayOfPictureUrl = [];
         const picture = req.files.image;
@@ -93,18 +85,14 @@ router.post(
         const length = req.files.image.length;
         for (let i = 0; i < length; i++) {
           pictureConverted = convertToBase64(picture[i]);
-          //console.log(pictureConverted);
+
           resultPicture = await cloudinary.uploader.upload(pictureConverted, {
             folder: `/vinted/offers_${newOffer._id}`,
           });
           console.log(resultPicture);
           arrayOfPictureUrl.push(resultPicture.secure_url);
         }
-        //console.log(arrayOfPictureUrl);
 
-        //if (arrayOfPictureUrl.length === req.files.picture.length)
-
-        //console.log(resultImage);
         newOffer.product_pictures = arrayOfPictureUrl;
         console.log(arrayOfPictureUrl);
       } else {
@@ -120,7 +108,7 @@ router.post(
 
       res.status(200).json(newOffer);
     } catch (error) {
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: error.response });
     }
   }
 );
@@ -134,7 +122,6 @@ router.put(
       return res.status(400).json({ message: "The offre isn't chosed" });
     }
 
-    //const { title, description, price, brand, size, condition, color, city } =
     const offerUpdate = await Offer.findById(req.body.id).populate({
       path: "owner",
       select: "account",
@@ -143,7 +130,6 @@ router.put(
     if (!offerUpdate) {
       return res.status(400).json({ message: "No offer with this ID" });
     }
-    //req.body;
 
     if (req.body.description) {
       offerUpdate.product_description = req.body.description;
@@ -188,7 +174,6 @@ router.put(
 );
 
 router.delete("/offer/delete", isAuthentificated, async (req, res) => {
-  //console.log(req.body.id);
   if (!req.body.id) {
     return res.status(400).json({ error: error.message });
   }
@@ -202,7 +187,6 @@ router.delete("/offer/delete", isAuthentificated, async (req, res) => {
     res
       .status(200)
       .json({ message: "The offre have been succesefully deleted" });
-    //console.log(offerToDelete);
   }
 });
 
@@ -244,16 +228,13 @@ router.get("/offers", async (req, res) => {
     }
 
     const skip = (Number(req.query.page) - 1) * limit;
-    //console.log("sortObj", sortObj);
-    //console.log(filters);
+
     offers = await Offer.find(filters)
       .populate({ path: "owner", select: "account" })
       .sort(sortObj)
-      //.select("_id product_name product_price owner")
+
       .skip(skip)
       .limit(limit);
-
-    //console.log("filterOffers", filterOffers);
 
     const count = await Offer.countDocuments(filters);
 
@@ -275,7 +256,6 @@ router.get("/offer/:id", async (req, res) => {
     }
 
     res.status(200).json(detailOffer);
-    //console.log(req.params.id);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
