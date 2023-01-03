@@ -220,7 +220,7 @@ router.get("/offers", async (req, res) => {
 
     sortObj = { product_price: filtre_price };
 
-    const limit = req.query.limit || 10;
+    const limit = req.query.limit;
     let pageRequired = 1;
 
     if (req.query.page) {
