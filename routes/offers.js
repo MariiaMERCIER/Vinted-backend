@@ -195,7 +195,7 @@ router.get("/offers", async (req, res) => {
     const filters = {};
     let sortObj = {};
     let filtre_price;
-    //console.log(req.query.sort);
+
     let offers;
     if (req.query.priceMin && req.query.priceMax) {
       filters.product_price = {
