@@ -1,16 +1,14 @@
-<<<<<<< HEAD
 
-# VINTED replica - Mariia MERCIER
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
-### Table of contents
 
-#VINTED replica - Mariia MERCIER
+#VINTED replica (back-end) - Mariia MERCIER
 
 ### Table of contents
 
 *General info
 *Technologies
-\*Setup
+*Setup
 
 ### General info
 
@@ -20,8 +18,9 @@ This project is replica of e-site commerece Vinted, my first project Full-stack 
 
 Project is create with:
 
-- Node js
-- MongoDB \* Postman
+* Node js
+* MongoDB 
+* Postman
 
 ### Setup
 
@@ -29,6 +28,4 @@ To run this project, install it locally with using
 
 $npm install
 $npm start
-$npm install cors
-$npm install mongoose
-$npm install cloudinary
+
