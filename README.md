@@ -26,6 +26,7 @@ Project is create with:
 
 To run this project, install it locally with using
 
+```
 $npm install
 $npm start
 
