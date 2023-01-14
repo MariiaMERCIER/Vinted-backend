@@ -6,9 +6,9 @@
 
 ### Table of contents
 
-*General info
-*Technologies
-*Setup
+* General info
+* Technologies
+* Setup
 
 ### General info
 
